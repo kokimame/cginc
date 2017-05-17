@@ -35,7 +35,7 @@ void main(void)
             }
         }
     }
-	
+    
     bmpout(output, WS, HS);
     strcpy(command, "mspaint ");
     strcat(command, output);

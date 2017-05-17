@@ -10,7 +10,7 @@ double bprim( int, double [] );
 double bshape( int id, double x[] )
 {
     double f[2];
-	
+    
     if (ST[id].op == 'E')
         return bprim(ST[id].left, x);
     else if (ST[id].op == '+' ) {
@@ -23,12 +23,12 @@ double bshape( int id, double x[] )
         f[1] = - bshape( ST[id].right, x );
         return fmax( f, 2 );
     }
-	else if(ST[id].op == '*'){
-		f[0] = bshape( ST[id].left,  x );
+    else if(ST[id].op == '*'){
+        f[0] = bshape( ST[id].left,  x );
         f[1] = bshape( ST[id].right, x );
 
-		return fmax(f, 2);
-	}
+        return fmax(f, 2);
+    }
     else 
         printf("bshape: Bad operator\n");
 }
@@ -39,10 +39,10 @@ double bprim( int id, double x[] )
         return brect(id, x);
     else if (strcmp(PDB[id].type, "circ") == 0)
         return bcirc(id, x);
-	else if(strcmp(PDB[id].type, "sphe") == 0)
-		return bsphe(id, x);
-	else if(strcmp(PDB[id].type, "cone") == 0)
-		return bcone(id, x);
+    else if(strcmp(PDB[id].type, "sphe") == 0)
+        return bsphe(id, x);
+    else if(strcmp(PDB[id].type, "cone") == 0)
+        return bcone(id, x);
     else
         printf("bprim: wrong type (beval.c)\n");
 }
@@ -90,38 +90,38 @@ double bcirc( int id, double x[] )
 
 double bcone(int id, double x[])
 {
-	double x0, y0, z0, z1, h, r, a, b = 1, f[3];
+    double x0, y0, z0, z1, h, r, a, b = 1, f[3];
 
-	x0 = PDB[id].data[0]; // x of the center of bottom circle
-	y0 = PDB[id].data[1]; // y
-	z0 = PDB[id].data[2]; // z
-	h = PDB[id].data[3]; // Height of a cone
-	z1 = z0 + h;  // z-value of the center of a cone
-	r = PDB[id].data[4]; // Radius of the bottom circle of a cone
-	a = (b * h * h) / (r * r);
+    x0 = PDB[id].data[0]; // x of the center of bottom circle
+    y0 = PDB[id].data[1]; // y
+    z0 = PDB[id].data[2]; // z
+    h = PDB[id].data[3]; // Height of a cone
+    z1 = z0 + h;  // z-value of the center of a cone
+    r = PDB[id].data[4]; // Radius of the bottom circle of a cone
+    a = (b * h * h) / (r * r);
 
-	f[0] = -a * (x[0] - x0)*(x[0] - x0) -
-		   a * (x[1] - y0)*(x[1] - y0) +
-		   b * (x[2] - z1)*(x[2] - z1);
+    f[0] = -a * (x[0] - x0)*(x[0] - x0) -
+           a * (x[1] - y0)*(x[1] - y0) +
+           b * (x[2] - z1)*(x[2] - z1);
 
-	f[1] = (x[2] - z0) * fabs( x[2] - z0 );
+    f[1] = (x[2] - z0) * fabs( x[2] - z0 );
     f[2] = (z1 - x[2]) * fabs( z1 - x[2] );
 
-	return -fmin(f, 3);
+    return -fmin(f, 3);
 }
 
 double bsphe(int id, double x[])
 {
-	double r, x0, y0, z0;
-	
-	r =  PDB[id].data[0];
+    double r, x0, y0, z0;
+    
+    r =  PDB[id].data[0];
     x0 = PDB[id].data[1];
     y0 = PDB[id].data[2];
     z0 = PDB[id].data[3];
 
-	return  fabs(x[0] - x0)*fabs(x[0] - x0) +
-			fabs(x[1] - y0)*fabs(x[1] - y0) +
-			fabs(x[2] - z0)*fabs(x[2] - z0) - r*r;
+    return  fabs(x[0] - x0)*fabs(x[0] - x0) +
+            fabs(x[1] - y0)*fabs(x[1] - y0) +
+            fabs(x[2] - z0)*fabs(x[2] - z0) - r*r;
 }
 
 double fmin( double f[], int n )
