@@ -2,7 +2,10 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
+
+#ifdef WIN32
 #include <process.h>
+#endif
 
 #define PI 3.14159265
 #define ZERO 0.001
