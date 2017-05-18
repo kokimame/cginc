@@ -1,8 +1,8 @@
 #include <stdio.h>
-#include <process.h>
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
+#include <process.h>
 
 #define PI 3.14159265
 #define ZERO 0.001
@@ -33,6 +33,10 @@ typedef struct {
     int left;
     int right;
 } CSG;
+
+int NPri = 0;
+Primitive PDB[100];
+// CSG ST[100];
 
 double Dark[3] = {0.2, 0.2, 0.2};
 

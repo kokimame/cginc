@@ -1,5 +1,6 @@
 #include "cg.h"
-#include "cone.mdl"
+#include "test_load.mdl"
+#include "loader.c"
 #include "beval.c"
 #include "probe.c"
 #include "camera.c"
@@ -14,12 +15,15 @@ void main(void)
     PointList plist[M1 + 2 * M2];
     double rgb[3];
     char output[256];
-    char *setting = "envsetting.csv";
+    char *envfile = "envsetting.csv";
+	char *csgfile = "csgfile.txt";
     char command[256];
+
+	setup_csg(csgfile);
 
     signPrim();
     surfaceArgs();
-    loadEnvSetting(setting, output, sizeof(output)); // from camera.c 
+    loadEnvSetting(envfile, output, sizeof(output)); // from camera.c 
     camera();
 
     for (v=0; v<HS; v++) {
