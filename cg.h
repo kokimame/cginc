@@ -39,8 +39,9 @@ typedef struct {
 } CSG;
 
 int NPri = 0;
+int NTree = 0;
 Primitive PDB[100];
-// CSG ST[100];
+CSG ST[100];
 
 double Dark[3] = {0.2, 0.2, 0.2};
 
