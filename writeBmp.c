@@ -54,7 +54,6 @@ void bmpout(char *filename, int width, int height)
             fwrite(&Pixel[i][j][2-k], 1, 1, fp);
         }
     }
-    
     fclose(fp);
 }
 

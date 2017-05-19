@@ -7,7 +7,7 @@
 #include "bright.c"
 #include "writeBmp.c"
 
-void main(void)
+int main(void)
 {
     int u, v;
     double S[3];
@@ -16,10 +16,10 @@ void main(void)
     double rgb[3];
     char output[256];
     char *envfile = "envsetting.csv";
-	char *csgfile = "csgfile.txt";
+    char *csgfile = "csgfile.txt";
     char command[256];
 
-	setup_csg(csgfile);
+    setup_csg(csgfile);
 
     signPrim();
     surfaceArgs();
@@ -41,7 +41,15 @@ void main(void)
     }
     
     bmpout(output, WS, HS);
-    strcpy(command, "mspaint ");
+    strcpy(command, "open ");
     strcat(command, output);
+
+#ifdef __APPLE__
+    // popen(command, "w");
+#endif
+#ifdef WIN32
     _popen(command, "w");
+#endif
+
+    return 0;
 }
