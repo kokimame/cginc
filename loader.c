@@ -89,7 +89,7 @@ void load_primitives()
 	char *pch = strtok(NULL, ","); // Set next character -> PDB.type
 	if (!strcmp(pch, "cone")) load_cone();
 	else if (!strcmp(pch, "rect")) load_rect();
-	else if (!strcmp(pch, "cyli")) load_cyli();
+	else if (!strcmp(pch, "circ")) load_cyli();
 	else if (!strcmp(pch, "sphe")) load_sphe();
 	else {
 		printf("Error: unknown primitive type %s\n", pch);
@@ -130,7 +130,7 @@ void load_cone()
 
 	set_primitive_data(data, sizeof(data));
 	PDB[NPri].type = "cone";
-	set_color_info(data);   // Set color quality, using up to data[5]
+	set_color_info(data);   // Set color quality to data, using it up to #5
 	// Cone needs 5 variables to define its shape
 	for (i = 6; i <= 10; i++) PDB[NPri].data[i - 6] = data[i];
 }
@@ -149,8 +149,24 @@ void load_rect()
 
 void load_sphe()
 {
+	int i;
+	double data[32];
+	
+	set_primitive_data(data, sizeof(data));
+	PDB[NPri].type = "sphe";
+	set_color_info(data);
+	// Sphe needs 4 varibles to define its shape
+	for (i = 6; i <= 9; i++) PDB[NPri].data[i - 6] = data[i];
 }
 
 void load_cyli()
 {
+	int i;
+	double data[32];
+
+	set_primitive_data(data, sizeof(data));
+	PDB[NPri].type = "circ";
+	set_color_info(data);
+	// Cylinder needs 5 variables to define its shape
+	for (i = 6; i <= 10; i++) PDB[NPri].data[i - 6] = data[i];
 }

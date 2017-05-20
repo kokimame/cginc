@@ -127,7 +127,8 @@ void bright(
     vPoint( np, plist, x, &type, &sf, &prim );
 
     // Texture mapping for cylinders
-    if(strcmp(PDB[prim].type, "circ") == 0 && x[2] != PDB[prim].data[4])
+	// This is not in use at this time
+    if(1 == 0 && strcmp(PDB[prim].type, "circ") == 0 && x[2] != PDB[prim].data[4])
     {
         double x0, y0, z0;
         double px, py, pz;
