@@ -128,7 +128,7 @@ void bright(
 
     // Texture mapping for cylinders
 	// This is not in use at this time
-    if(1 == 0 && strcmp(PDB[prim].type, "circ") == 0 && x[2] != PDB[prim].data[4])
+    if(1 == 0 && strcmp(PDB[prim].type, "cyli") == 0 && x[2] != PDB[prim].data[4])
     {
         double x0, y0, z0;
         double px, py, pz;

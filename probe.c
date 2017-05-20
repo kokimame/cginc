@@ -26,7 +26,7 @@ void rectArgs(int id)
     NS1++;
 }
 
-void circArgs(int id)
+void cyliArgs(int id)
 {
     double x1, y1, r;
 
@@ -107,7 +107,7 @@ void surfaceArgs(void)
     
     for (i=1; i<=NPri; i++) {
         if      (strcmp(PDB[i].type, "rect") == 0) rectArgs(i);
-        else if (strcmp(PDB[i].type, "circ") == 0) circArgs(i);
+        else if (strcmp(PDB[i].type, "cyli") == 0) cyliArgs(i);
         else if (strcmp(PDB[i].type, "sphe") == 0) spheArgs(i);
         else if (strcmp(PDB[i].type, "cone") == 0) coneArgs(i);
         else printf("bprim: wrong type (probe.c)\n");

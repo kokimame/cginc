@@ -2,7 +2,7 @@ double bshape( int, double [] );
 double min_in( double [], int );
 double max_in( double [], int );
 double brect( int, double [] );
-double bcirc( int, double [] );
+double bcyli( int, double [] );
 double bsphe( int, double [] );
 double bcone( int, double [] );
 double bprim( int, double [] );
@@ -37,8 +37,8 @@ double bprim( int id, double x[] )
 {
     if      (strcmp(PDB[id].type, "rect") == 0)
         return brect(id, x);
-    else if (strcmp(PDB[id].type, "circ") == 0)
-        return bcirc(id, x);
+    else if (strcmp(PDB[id].type, "cyli") == 0)
+        return bcyli(id, x);
     else if(strcmp(PDB[id].type, "sphe") == 0)
         return bsphe(id, x);
     else if(strcmp(PDB[id].type, "cone") == 0)
@@ -70,7 +70,7 @@ double brect(int id, double x[])
     return ( ff * fabs(ff) );
 }
 
-double bcirc( int id, double x[] )
+double bcyli( int id, double x[] )
 {
     double r, x0, y0, h1, h2, f[3], ff;
 
@@ -97,7 +97,7 @@ double bcone(int id, double x[])
     z0 = PDB[id].data[2]; // z
     h = PDB[id].data[3]; // Height of a cone
     z1 = z0 + h;  // z-value of the center of a cone
-    r = PDB[id].data[4]; // Radius of the bottom circle of a cone
+    r = PDB[id].data[4]; // Radius of the bottom circe of a cone
     a = (b * h * h) / (r * r);
 
     f[0] = -a * (x[0] - x0)*(x[0] - x0) -
