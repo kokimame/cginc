@@ -8,7 +8,8 @@ void load_csg(char *filename);
 void load_primitives();
 int parse_expr(char *expr);
 void show_the_tree();
-void load_expression();
+void set_primitive_data(double *data, int size);
+void set_color_info(double *data);
 void load_cone();
 void load_rect();
 void load_cyli();
@@ -64,7 +65,9 @@ int parse_expr(char *expr)
 	int NCurrent = ++NTree; // Store the current number at Tree
 
 	while (expr[i] == ' ' || expr[i] == '(' || expr[i] == ')') { i++; };
-	if (expr[i] == '\n') return -1;
+	if (expr[i] == '\n') {
+		printf("Error: Read the end of expr\n"); exit(1);
+	}
 
 	if (expr[i] == '+' || expr[i] == '-' || expr[i] == '*') {
 		ST[NCurrent].op = expr[i];
@@ -92,14 +95,12 @@ void load_primitives()
 		printf("Error: unknown primitive type %s\n", pch);
 		exit(1);
 	}
-
 }
 
-void load_cone()
+void set_primitive_data(double *data, int size)
 {
 	char *pch;
-	double data[11];
-	int cnt = 0, i;
+	int cnt = 0;
 	long ret;
 
 	pch = strtok(NULL, ",<");
@@ -110,20 +111,40 @@ void load_cone()
 		pch = strtok(NULL, ">,<");
 	}
 	// for (i = 0; i < cnt; i++) printf("%.2f ", data[i]);
+}
 
-	PDB[NPri].type = "cone";
+void set_color_info(double *data)
+{
 	PDB[NPri].rgb[0] = data[0];
 	PDB[NPri].rgb[1] = data[1];
 	PDB[NPri].rgb[2] = data[2];
 	PDB[NPri].kd = data[3];
 	PDB[NPri].ks = data[4];
 	PDB[NPri].n = (int)data[5];
-	for (i = 6; i <= 10; i++) PDB[NPri].data[i - 6] = data[i];
+}
 
+void load_cone()
+{
+	int i;
+	double data[32];
+
+	set_primitive_data(data, sizeof(data));
+	PDB[NPri].type = "cone";
+	set_color_info(data);   // Set color quality, using up to data[5]
+	// Cone needs 5 variables to define its shape
+	for (i = 6; i <= 10; i++) PDB[NPri].data[i - 6] = data[i];
 }
 
 void load_rect()
 {
+	int i;
+	double data[32];
+
+	set_primitive_data(data, sizeof(data));
+	PDB[NPri].type = "rect";
+	set_color_info(data);
+	// Rect needs 6 variables to define its shape
+	for (i = 6; i <= 11; i++) PDB[NPri].data[i - 6] = data[i];
 }
 
 void load_sphe()
