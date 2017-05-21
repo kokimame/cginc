@@ -72,17 +72,17 @@ double brect(int id, double x[])
 
 double bcyli( int id, double x[] )
 {
-    double r, x0, y0, h1, h2, f[3], ff;
+    double x0, y0, z0, z1, r, f[3], ff;
 
-    r =  PDB[id].data[0];
-    x0 = PDB[id].data[1];
-    y0 = PDB[id].data[2];
-    h1 = PDB[id].data[3];
-    h2 = PDB[id].data[4];
+    x0 = PDB[id].data[0];
+    y0 = PDB[id].data[1];
+    z0 = PDB[id].data[2];
+    z1 = PDB[id].data[3];
+	r = PDB[id].data[4];
 
     f[0] = r*r - (x[0] - x0)*(x[0] - x0) - (x[1] - y0)*(x[1] - y0);
-    f[1] = (x[2] - h1) * fabs( x[2] - h1 );
-    f[2] = (h2 - x[2]) * fabs( h2 - x[2] );
+    f[1] = (x[2] - z0) * fabs( x[2] - z0 );
+    f[2] = (z1 - x[2]) * fabs( z1 - x[2] );
     ff = - min_in( f, 3 );
 
     return (ff);
@@ -92,12 +92,13 @@ double bcone(int id, double x[])
 {
     double x0, y0, z0, z1, h, r, a, b = 1, f[3];
 
-    x0 = PDB[id].data[0]; // x of the center of bottom circle
+    x0 = PDB[id].data[0]; // x of the center of the base circle
     y0 = PDB[id].data[1]; // y
     z0 = PDB[id].data[2]; // z
-    h = PDB[id].data[3]; // Height of a cone
-    z1 = z0 + h;  // z-value of the center of a cone
-    r = PDB[id].data[4]; // Radius of the bottom circe of a cone
+	r = PDB[id].data[3]; // Radius of the base circle
+    z1 = PDB[id].data[4]; // Height of a cone
+    h = z1 - z0;  // z-value of the center of a cone
+	if (h < 0) { printf("Error: Height of cone is negative\n"); exit(1); }
     a = (b * h * h) / (r * r);
 
     f[0] = -a * (x[0] - x0)*(x[0] - x0) -
@@ -112,12 +113,12 @@ double bcone(int id, double x[])
 
 double bsphe(int id, double x[])
 {
-    double r, x0, y0, z0;
+    double x0, y0, z0, r;
     
-    r =  PDB[id].data[0];
-    x0 = PDB[id].data[1];
-    y0 = PDB[id].data[2];
-    z0 = PDB[id].data[3];
+    x0 = PDB[id].data[0];
+    y0 = PDB[id].data[1];
+    z0 = PDB[id].data[2];
+	r = PDB[id].data[3];
 
     return  fabs(x[0] - x0)*fabs(x[0] - x0) +
             fabs(x[1] - y0)*fabs(x[1] - y0) +

@@ -28,24 +28,29 @@ void rectArgs(int id)
 
 void cyliArgs(int id)
 {
-    double x1, y1, r;
+    double x0, y0, z0, z1, r;
 
-    r = PDB[id].data[0]; x1 = PDB[id].data[1]; y1 = PDB[id].data[2];
+    x0 = PDB[id].data[0];
+	y0 = PDB[id].data[1];
+	z0 = PDB[id].data[2];
+	z1 = PDB[id].data[3];
+	r = PDB[id].data[4];
+
     A2[0][NS2] = 1.0; A2[1][NS2] = 1.0; A2[2][NS2] = 0.0;
     A2[3][NS2] = 0.0; A2[4][NS2] = 0.0; A2[5][NS2] = 0.0;
-    A2[6][NS2] = -2.0*x1;
-    A2[7][NS2] = -2.0*y1;
+    A2[6][NS2] = -2.0*x0;
+    A2[7][NS2] = -2.0*y0;
     A2[8][NS2] = 0.0;
-    A2[9][NS2] = x1*x1 + y1*y1 - r*r;
+    A2[9][NS2] = x0*x0 + y0*y0 - r*r;
     A2Prim[NS2] = id;
     NS2++;
     
     A1[0][NS1] =  0.0; A1[1][NS1] =  0.0; A1[2][NS1] = -1.0;
-    A1[3][NS1] =  PDB[id].data[3];
+    A1[3][NS1] =  z0;
     A1Prim[NS1] = id;
     NS1++;
     A1[0][NS1] =  0.0; A1[1][NS1] =  0.0; A1[2][NS1] =  1.0;
-    A1[3][NS1] = -PDB[id].data[4];
+    A1[3][NS1] = -z1;
     A1Prim[NS1] = id;
     NS1++;
 }
@@ -54,13 +59,14 @@ void coneArgs(int id)
 {
     double x0, y0, z0, z1, h, r, a, b = 1;
 
-    x0 = PDB[id].data[0]; // x of the center of bottom circle
+    x0 = PDB[id].data[0]; // x of the center of the base circle
     y0 = PDB[id].data[1]; // y
     z0 = PDB[id].data[2]; // z
-    h  = PDB[id].data[3]; // Height of a cone
-    z1 = z0 + h;  // z-value of the center of a cone
-    r  = PDB[id].data[4]; // Radius of the bottom circle of a cone
+	r = PDB[id].data[3]; // Radius of the base circle
+    z1  = PDB[id].data[4]; // Cap z value
+    h = z1 - z0;
     a = (b * h * h) / (r * r);
+	if (h < 0) { printf("Error: Height of cone is negative.\n"); exit(1); }
 
     A2[0][NS2] = a; A2[1][NS2] = a; A2[2][NS2] = -b;
     A2[3][NS2] = 0.0; A2[4][NS2] = 0.0; A2[5][NS2] = 0.0;
@@ -85,15 +91,17 @@ void coneArgs(int id)
 
 void spheArgs(int id)
 {
-    double x1, y1, z1, r;
-    r = PDB[id].data[0]; 
-    x1 = PDB[id].data[1]; y1 = PDB[id].data[2]; z1 = PDB[id].data[3];
+    double x0, y0, z0, r;
+
+    x0 = PDB[id].data[0]; y0 = PDB[id].data[1]; z0 = PDB[id].data[2];
+	r = PDB[id].data[3];
+
     A2[0][NS2] = 1.0; A2[1][NS2] = 1.0; A2[2][NS2] = 1.0;
     A2[3][NS2] = 0.0; A2[4][NS2] = 0.0; A2[5][NS2] = 0.0;
-    A2[6][NS2] = -2.0*x1;
-    A2[7][NS2] = -2.0*y1;
-    A2[8][NS2] = -2.0*z1;
-    A2[9][NS2] = x1*x1 + y1*y1 + z1*z1 - r*r;
+    A2[6][NS2] = -2.0*x0;
+    A2[7][NS2] = -2.0*y0;
+    A2[8][NS2] = -2.0*z0;
+    A2[9][NS2] = x0*x0 + y0*y0 + z0*z0 - r*r;
     A2Prim[NS2] = id;
     NS2++;
 }
