@@ -1,4 +1,4 @@
-void treeWalk(int lr, int id, int Count, char op)
+ void treeWalk(int lr, int id, int Count, char op)
 {
     if (lr == 1 && op == '-') Count++;
     if (ST[id].op == 'E') {
@@ -106,6 +106,25 @@ void normalizeLight(void)
     for (j=0; j<NLight; j++) Light[j].b = (1.0 - df)/total * Light[j].b;
 }
 
+void textureMappingToCone(double *x, double rgb[], int prim)
+{
+	double x0, y0, z0;
+	double px, py, pz, theta, w;
+	int u, v, h, i, j, k;
+
+	x0 = PDB[prim].data[1]; y0 = PDB[prim].data[2]; z0 = PDB[prim].data[3];
+	h = PDB[prim].data[4] - z0;
+	px = x[0]; py = x[1]; pz = x[2];
+	theta = atan2(fabs(py - y0), fabs(px - x0));
+	w = pz - z0;
+
+	u = (int)((WTex * theta) / (2 * PI));
+	v = (int)((HTex * w) / h);
+
+	for (j = 0; j<3; j++)
+		rgb[j] = (double)TexImage[v][u][j] / 255;
+}
+
 void bright(
         int np,
         PointList plist[],
@@ -122,34 +141,16 @@ void bright(
     double rgbObject[3];
     int type, sf, prim;
     double d, sln, srv, kd, ks, rgbLight[3], y[3], x2[3];
-    double theta, w;
     
     vPoint( np, plist, x, &type, &sf, &prim );
 
-    // Texture mapping for cylinders
-	// This is not in use at this time
+	// Texture mapping for the side plane of cylinders
+	// This is not in use at this time. Also this line assumes outdated definition for cyli.
     if(1 == 0 && strcmp(PDB[prim].type, "cyli") == 0 && x[2] != PDB[prim].data[4])
     {
-        double x0, y0, z0;
-        double px, py, pz;
-        int u, v, h;
-
-        x0 = PDB[prim].data[1]; y0 = PDB[prim].data[2]; z0 = PDB[prim].data[3];
-        h = PDB[prim].data[4] - z0;
-        px = x[0]; py = x[1]; pz = x[2];
-        theta = atan2(fabs(py - y0),fabs(px - x0));
-        w = pz - z0;
-
-        u = (int)((WTex * theta)/(2 * PI));
-        v = (int)((HTex * w) / h);
-
-        for(j=0; j<3; j++)
-            rgb[j] = (double)TexImage[v][u][j] / 255;
-
-        return;
+		textureMappingToCone(x, rgb, prim);
     }
-    
-    for (j=0; j<3; j++) rgbObject[j] = PDB[prim].rgb[j];
+	else { for (j = 0; j < 3; j++) rgbObject[j] = PDB[prim].rgb[j]; }
 
     normalVector( type, sf, prim, x, vn );
     
