@@ -11,21 +11,22 @@
 
 A model is defined as follows: ```Model#, type-name, <color-info>, <shape-info>```
 
-| Type | Shape-Info |
-| :---- | :-------- |
-| rect  | <x, x', y, y', z, z'>  |
-| cyli  | <r, x, y, z, z'>  |
-| sphe  | <r, x0, y0, z0>  |
-| cone  | <x, y, z, h, r>  |
+| Type | Shape-Info | Note |
+| :---- | :-------- |:------|
+| rect  | <x, x', y, y', z, z'>  |(x,y,z) = Corner1, (x',y',z') = Corner2 like Box of Povray|
+| cyli  | <Base point, Cap z, Radius>  ||
+| sphe  | <Center, Radius>  ||
+| cone  | <Center of Base circle, Radius of Base circle, Cap z>  ||
 
 ## Example
 Setup for CSG, writen in csgfile.txt
 ```
 1,rect,<1,0,0,1,0,0>,<-4,4,-4,4,-4,4>
-2,sphe,<0,0,1,1,0,0>,<5,0,0,0>
+2,sphe,<0,0,1,1,0,0>,<0,0,0,5>
 3,rect,<0,1,0,1,0,0>,<-6,6,-2,2,-2,2>
-4,cyli,<0,1,0,1,0,0>,<2,0,0,-6,6>
-(- (* 1 2 )  (+ 3 4) )
+4,cyli,<0,1,0,1,0,0>,<0,0,-6,6,2>
+5,cone,<1,1,0,1,0,0>,<0,0,-6,6,2>
+(+ (- (* 1 2 )  (+ 3 4) ) 5)
 ```
 The last line is the operation, that defines how models are combined and constructs one object.
 
