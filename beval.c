@@ -1,6 +1,6 @@
 double bshape( int, double [] );
-double min_in( double [], int );
-double max_in( double [], int );
+double minIn( double [], int );
+double maxIn( double [], int );
 double brect( int, double [] );
 double bcyli( int, double [] );
 double bsphe( int, double [] );
@@ -16,18 +16,18 @@ double bshape( int id, double x[] )
     else if (ST[id].op == '+' ) {
         f[0] = bshape( ST[id].left,  x );
         f[1] = bshape( ST[id].right, x );
-        return min_in( f, 2 );
+        return minIn( f, 2 );
     }
     else if (ST[id].op == '-' ) {
         f[0] = bshape( ST[id].left,  x );
         f[1] = - bshape( ST[id].right, x );
-        return max_in( f, 2 );
+        return maxIn( f, 2 );
     }
     else if(ST[id].op == '*'){
         f[0] = bshape( ST[id].left,  x );
         f[1] = bshape( ST[id].right, x );
 
-        return max_in(f, 2);
+        return maxIn(f, 2);
     }
     else 
         printf("bshape: Bad operator\n");
@@ -65,7 +65,7 @@ double brect(int id, double x[])
     f[3] = y2 - x[1];
     f[4] = x[2] - z1;
     f[5] = z2 - x[2];
-    ff = - min_in( f, 6 );
+    ff = - minIn( f, 6 );
 
     return ( ff * fabs(ff) );
 }
@@ -83,7 +83,7 @@ double bcyli( int id, double x[] )
     f[0] = r*r - (x[0] - x0)*(x[0] - x0) - (x[1] - y0)*(x[1] - y0);
     f[1] = (x[2] - z0) * fabs( x[2] - z0 );
     f[2] = (z1 - x[2]) * fabs( z1 - x[2] );
-    ff = - min_in( f, 3 );
+    ff = - minIn( f, 3 );
 
     return (ff);
 }
@@ -108,7 +108,7 @@ double bcone(int id, double x[])
     f[1] = (x[2] - z0) * fabs( x[2] - z0 );
     f[2] = (z1 - x[2]) * fabs( z1 - x[2] );
 
-    return -min_in(f, 3);
+    return -minIn(f, 3);
 }
 
 double bsphe(int id, double x[])
@@ -125,7 +125,7 @@ double bsphe(int id, double x[])
             fabs(x[2] - z0)*fabs(x[2] - z0) - r*r;
 }
 
-double min_in( double f[], int n )
+double minIn( double f[], int n )
 {
     double min;
     int i;
@@ -136,7 +136,7 @@ double min_in( double f[], int n )
     return (min);
 }
 
-double max_in( double f[], int n )
+double maxIn( double f[], int n )
 {
     double max;
     int i;

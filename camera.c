@@ -1,4 +1,4 @@
-void loadEnvSetting(char *filename, char *o_file, int o_size)
+void loadEnvSetting(char *filename, char *output, int o_size)
 {
     int i;
     FILE *fp;
@@ -8,8 +8,8 @@ void loadEnvSetting(char *filename, char *o_file, int o_size)
         exit(1);
     }
 
-    fgets(o_file, o_size, fp);
-    strtok(o_file, "\n");
+    fgets(output, o_size, fp);
+    strtok(output, "\n");
 
     fscanf(fp, "%d", &NLight);
     printf("Number of Lights : %d\n", NLight);
