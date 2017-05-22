@@ -55,15 +55,15 @@ typedef struct {
 int NLight;
 LIGHT Light[10];
 
-double C[3];
-double B[3];
-double VUP[3];
-int WS;
-int HS;
-double D;
-double W[3];
-double U[3];
-double V[3];
+double C[3];	// The position of the camera
+double B[3];	// Center of the screen
+double VUP[3];	// Up-vector
+int WS;			// Width of output image
+int HS;			// Height of output image
+double D;		// Resize factor of output image
+double W[3];	// Unit gaze vector
+double U[3];	// Unit vector to U-axis on the screen
+double V[3];	// Unit vector to V-axis on the screen
 
 #define M1 200
 #define M2 100
@@ -74,12 +74,13 @@ int A2Prim[M2];
 int NS1;
 int NS2;
 
+// Stores the data of intersected points
 typedef struct {
-    double x, y, z;
-    double t;
-    int type;
-    int sf;
-    int prim;
+    double x, y, z; // Position
+    double t;		// Parameter
+    int type;		// 1 for plane, 2 for curve
+    int sf;			// A'type'[][sf] where type is 1 or 2
+    int prim;		// Model number
 } PointList;
 
 int Sign[M2];

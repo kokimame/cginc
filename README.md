@@ -49,3 +49,8 @@ the center of the screen, up-vector, the size of the output image and scale.
 
 
 ![image](sample.bmp)
+
+
+Now cginc can compute specular light. But yet it's poor quality.
+
+![image](tracing_test.bmp)
