@@ -9,7 +9,7 @@
 
 ## Model Definition
 
-A model is defined by like ```Model#, type-name, <color-info>, <shape-info>```
+A model is defined as follows: ```Model#, type-name, <color-info>, <shape-info>```
 
 | Type | Shape-Info |
 | :---- | :-------- |
