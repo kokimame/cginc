@@ -1,26 +1,3 @@
-void inputLight(void)
-{
-    int i;
-    printf("Number of Lights : "); scanf("%d", &NLight);
-    for (i=0; i<NLight; i++) {
-        printf("Position of Light(x,y,z)%d : ", i+1);
-        scanf("%lf %lf %lf", &Light[i].x, &Light[i].y, &Light[i].z);
-        printf("Color of Light(R,G,B)%d : ", i+1);
-        scanf("%lf %lf %lf", &Light[i].r, &Light[i].g, &Light[i].b);
-    }
-}
-
-void inputView(void)
-{
-    printf("Point of View : "); scanf("%lf %lf %lf", &C[0], &C[1], &C[2]);
-    printf("Center of the Screen : "); scanf("%lf %lf %lf", &B[0], &B[1], &B[2]);
-    printf("Up-vector : "); scanf("%lf %lf %lf", 
-                                      &VUP[0], &VUP[1], &VUP[2]);
-    printf("Size of Output image\n");
-    printf("Width & Height: "); scanf("%d %d", &WS, &HS);
-    printf("Resize : "); scanf("%lf", &D);
-}
-
 void loadEnvSetting(char *filename, char *o_file, int o_size)
 {
     int i;
