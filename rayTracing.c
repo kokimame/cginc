@@ -16,10 +16,8 @@ int main(void)
     double rgb[3];		// RGB for each pixel at the screen
     char output[256];	// Output image name
     char *envfile = "envsetting.csv";
-    char *csgfile = "csgfile.txt";
     char command[256];
 
-    loadCsg(csgfile);
 	loadEnvSetting(envfile, output, sizeof(output)); // from camera.c 
 
     signPrim();

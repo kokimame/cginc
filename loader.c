@@ -4,7 +4,8 @@ redefinition; different basic types or multiple initialization
 of variables defined in cg.h.
 */
 
-void loadCsg(char *filename);
+void loadEnvSetting(char *filename, char *output, int o_size);
+void loadCsg(FILE *fp);
 void loadPrimitives();
 int parseExpr(char *expr);
 void showTheTree();
@@ -15,20 +16,56 @@ void loadRect();
 void loadCyli();
 void loadSphe();
 
-void loadCsg(char *filename)
+void loadEnvSetting(char *filename, char *output, int o_size)
+{
+	int i;
+	FILE *fp;
+
+	if ((fp = fopen(filename, "r")) == NULL) {
+		printf("File open error: %s", filename);
+		exit(1);
+	}
+
+	// Load setting for CSG Models.
+	loadCsg(fp);
+	printf("Loaded CSG\n");
+	// Setting for the environment such as light source, camera etc
+	fgets(output, o_size, fp);
+	strtok(output, "\n");
+
+	fscanf(fp, "%d", &NLight);
+	printf("Number of Lights : %d\n", NLight);
+	for (i = 0; i < NLight; i++) {
+		fscanf(fp, "%lf,%lf,%lf", &Light[i].x, &Light[i].y, &Light[i].z);
+		fscanf(fp, "%lf,%lf,%lf", &Light[i].r, &Light[i].g, &Light[i].b);
+		printf("Position of Light%d(%2.2lf,%2.2lf,%2.2lf)\n", i + 1, Light[i].x, Light[i].y, Light[i].z);
+		printf("Color of Light%d(%2.2lf,%2.2lf,%2.2lf)\n", i + 1, Light[i].r, Light[i].g, Light[i].b);
+
+	}
+	fscanf(fp, "%lf,%lf,%lf", &C[0], &C[1], &C[2]);
+	printf("Point of View (%2.2lf,%2.2lf,%2.2lf)\n", C[0], C[1], C[2]);
+
+	fscanf(fp, "%lf,%lf,%lf", &B[0], &B[1], &B[2]);
+	printf("Center of the Screen (%2.2lf,%2.2lf,%2.2lf)\n", B[0], B[1], B[2]);
+
+	fscanf(fp, "%lf,%lf,%lf", &VUP[0], &VUP[1], &VUP[2]);
+	printf("Up-Vector (%2.2lf,%2.2lf,%2.2lf)\n", VUP[0], VUP[1], VUP[2]);
+
+	fscanf(fp, "%d,%d", &WS, &HS);
+	fscanf(fp, "%lf", &D);
+	printf("Size of Output image : (%d,%d)\n", WS, HS);
+	printf("Resize : %2.2lf\n", D);
+}
+
+
+void loadCsg(FILE *fp)
 {
 	PDB[0].type = "S";
 	ST[0].op = 'S';
 
-	FILE *fp;
 	char buffer[256];
 	char bufexp[256];
 	char *pch;
-
-	if ((fp = fopen(filename, "r")) == NULL) {
-		printf("File open error: %s\n", filename);
-		exit(1);
-	}
 
 	while (fgets(buffer, sizeof(buffer), fp)) {
 		printf("%s", buffer);
@@ -42,9 +79,9 @@ void loadCsg(char *filename)
 		else if (pch[0] == '(') {
 			parseExpr(bufexp);
 			showTheTree();
+			break;
 		}
 	}
-	fclose(fp);
 }
 void showTheTree()
 {
